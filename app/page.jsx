@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
@@ -69,12 +69,12 @@ export default function Home() {
 
     if (!tempoHoras || !pesoTotal) {
       setResult(null);
-      setError("Informe o tempo de impressao e o peso total da peca.");
+      setError("Informe o tempo de impressão e o peso total da peça.");
       return;
     }
 
-    const custoHora = 2.0;
-    const margem = 2;
+    const custoHora = 4.0;
+    const margem = 2.2;
     const precoKg = 100.0;
     const custo = custoHora * tempoHoras + precoKg * (pesoTotal / 1000);
     const preco = custo * margem;
@@ -118,18 +118,38 @@ export default function Home() {
         <div className="pointer-events-none absolute -top-24 right-[-80px] h-80 w-80 rounded-full bg-sky-200/40 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-24 left-[-80px] h-80 w-80 rounded-full bg-amber-200/50 blur-3xl" />
 
-        <div className="mx-auto max-w-6xl px-6 py-14">
+        <div className="mx-auto max-w-6xl px-6 py-10">
+          <header className="mb-10 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <img
+                className="h-20 w-20 rounded-3xl border border-sky-200 bg-white/80 object-contain shadow-sm"
+                src="/images/logo.png"
+                alt="Blus 3D"
+              />
+              <div>
+                <div className="text-lg font-semibold text-stone-900">
+                  Blus 3D
+                </div>
+                <div className="text-xs uppercase tracking-wider text-stone-500">
+                  Impressão personalizada
+                </div>
+              </div>
+            </div>
+            <div className="hidden text-sm font-medium text-stone-500 md:block">
+              Atendimento rápido via WhatsApp
+            </div>
+          </header>
           <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr]">
             <section className="space-y-6">
               <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-sky-700 shadow-sm">
-                Simulador de orcamento
+                Simulador de orçamento
               </div>
               <h1 className="font-display text-4xl font-semibold leading-tight text-stone-900 md:text-5xl">
-                Simule seu orcamento 3D em minutos, do jeito certo
+                Simule seu orçamento 3D em minutos, do jeito certo
               </h1>
               <p className="text-lg text-stone-700">
                 Preencha os dados e receba uma estimativa clara para a sua
-                impressao. Ajuste o tempo, o peso e a cor desejada.
+                impressão. Ajuste o tempo, o peso e a cor desejada.
               </p>
 
               <div className="rounded-2xl border border-sky-200 bg-white/80 p-4 shadow-sm">
@@ -149,7 +169,7 @@ export default function Home() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-stone-200 bg-white/80 p-4 shadow-sm">
                   <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">
-                    Prazo medio
+                    Prazo médio
                   </div>
                   <div className="mt-2 text-2xl font-semibold text-stone-900">
                     2-4 dias
@@ -168,7 +188,7 @@ export default function Home() {
 
             <section className="rounded-3xl border border-stone-200 bg-white/80 p-6 shadow-lg backdrop-blur">
               <h2 className="font-display text-2xl font-semibold text-stone-900">
-                Dados para o orcamento
+                Dados para o orçamento
               </h2>
               <p className="mt-1 text-sm text-stone-600">
                 Informe os detalhes abaixo para gerar a estimativa.
@@ -219,7 +239,7 @@ export default function Home() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-stone-700">
-                      Numero*
+                      Número*
                     </label>
                     <input
                       className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
@@ -299,8 +319,8 @@ export default function Home() {
                     Como obter tempo e peso no MakerWorld?
                   </summary>
                   <p className="mt-2 text-sm text-stone-600">
-                    Abra o modelo no MakerWorld, clique no perfil de impressao e
-                    veja o tempo e o peso total da peca.
+                    Abra o modelo no MakerWorld, clique no perfil de impressão e
+                    veja o tempo e o peso total da peça.
                   </p>
                   <img
                     className="mt-3 w-full rounded-xl border border-stone-200"
@@ -312,7 +332,7 @@ export default function Home() {
                 <div className="grid gap-4 sm:grid-cols-[1.2fr_0.8fr_0.8fr]">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-stone-700">
-                      Nome da peca (opcional)
+                      Nome da peça (opcional)
                     </label>
                     <input
                       className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
@@ -353,7 +373,7 @@ export default function Home() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-stone-700">
-                      Link do arquivo de impressao
+                      Link do arquivo de impressão
                     </label>
                     <input
                       className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
@@ -370,7 +390,7 @@ export default function Home() {
                     <input
                       className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
                       type="text"
-                      placeholder="Ex: Preto, branco, translucido"
+                      placeholder="Ex: Preto, branco, translúcido"
                       value={form.cor}
                       onChange={update("cor")}
                     />
@@ -381,7 +401,7 @@ export default function Home() {
                   type="submit"
                   className="w-full rounded-xl bg-sky-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-200/60 transition hover:-translate-y-0.5 hover:bg-sky-700"
                 >
-                  Calcular orcamento
+                  Calcular orçamento
                 </button>
               </form>
 
@@ -394,7 +414,7 @@ export default function Home() {
               {result !== null && (
                 <div className="mt-6 rounded-2xl border border-sky-200 bg-sky-50/80 p-4">
                   <h3 className="font-display text-lg font-semibold text-emerald-900">
-                    Resumo do orcamento
+                    Resumo do orçamento
                   </h3>
                   <div className="mt-3 grid gap-2 text-sm text-sky-900">
                     <div>
@@ -404,7 +424,7 @@ export default function Home() {
                       <strong>WhatsApp:</strong> {form.whatsapp}
                     </div>
                     <div>
-                      <strong>Peca:</strong> {form.nomePeca || "-"}
+                      <strong>Peça:</strong> {form.nomePeca || "-"}
                     </div>
                     <div>
                       <strong>Tempo:</strong> {result.tempoHoras} horas
@@ -424,7 +444,7 @@ export default function Home() {
                     </div>
                   </div>
                   <p className="mt-2 text-xs text-sky-800/80">
-                    * Valor estimado. O preco final pode variar apos analise.
+                    * Valor estimado. O preço final pode variar após análise.
                   </p>
                   <a
                     className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-200/60 transition hover:-translate-y-0.5"

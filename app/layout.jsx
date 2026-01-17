@@ -1,8 +1,11 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Orcamento de Impressao 3D",
-  description: "Formulario de orcamento para impressao 3D"
+  title: "Orçamento de Impressão 3D",
+  description: "Formulário de orçamento para impressão 3D",
+  icons: {
+    icon: "/images/logo.png"
+  }
 };
 
 export default function RootLayout({ children }) {

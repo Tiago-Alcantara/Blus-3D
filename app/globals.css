@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600&family=Space+Grotesk:wght@400;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-stone-50 text-stone-900 antialiased;
+  font-family: "Archivo", system-ui, sans-serif;
+}

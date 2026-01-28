@@ -3,6 +3,29 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const MATERIALS = {
+    PLA: {
+      priceKg: 105.0,
+      colors: [
+        "Preto",
+        "Branco",
+        "Marrom",
+        "Cinza",
+        "Vermelho",
+        "Verde",
+        "Azul",
+      ],
+      description:
+        "Ideal para peças decorativas, protótipos visuais e uso geral. Acabamento brilhante e fácil impressão. Não recomendado para altas temperaturas (>60°C).",
+    },
+    PETG: {
+      priceKg: 125.0,
+      colors: ["Preto", "Branco"],
+      description:
+        "Maior resistência mecânica e térmica. Ideal para peças funcionais, suportes e itens que ficarão expostos ao sol ou esforço moderado.",
+    },
+  };
+
   const [form, setForm] = useState({
     nome: "",
     whatsapp: "",
@@ -17,7 +40,8 @@ export default function Home() {
     tempo: "",
     peso: "",
     link: "",
-    cor: "",
+    material: "PLA",
+    cor: MATERIALS.PLA.colors[0],
   });
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
@@ -26,11 +50,17 @@ export default function Home() {
   const [hasLoadedStorage, setHasLoadedStorage] = useState(false);
 
   function update(field) {
-    return (e) =>
-      setForm((prev) => ({
-        ...prev,
-        [field]: e.target.value,
-      }));
+    return (e) => {
+      const value = e.target.value;
+      setForm((prev) => {
+        const next = { ...prev, [field]: value };
+        // Se mudou o material, reseta a cor para a primeira disponível
+        if (field === "material") {
+          next.cor = MATERIALS[value].colors[0];
+        }
+        return next;
+      });
+    };
   }
 
   useEffect(() => {
@@ -67,6 +97,12 @@ export default function Home() {
       return;
     }
 
+    if (!form.link) {
+      setResult(null);
+      setError("Informe o link do arquivo de impressão.");
+      return;
+    }
+
     if (!tempoHoras || !pesoTotal) {
       setResult(null);
       setError("Informe o tempo de impressão e o peso total da peça.");
@@ -75,7 +111,10 @@ export default function Home() {
 
     const custoHora = 3.0;
     const margem = 2.0;
-    const precoKg = 100.0;
+
+    // Preço do kg baseado no material
+    const precoKg = MATERIALS[form.material].priceKg;
+
     const custo = custoHora * tempoHoras + precoKg * (pesoTotal / 1000);
     const preco = custo * margem;
 
@@ -83,6 +122,7 @@ export default function Home() {
       preco,
       tempoHoras,
       pesoTotal,
+      material: form.material,
     });
   }
 
@@ -94,10 +134,11 @@ export default function Home() {
       `Nome: ${form.nome}`,
       `WhatsApp: ${form.whatsapp}`,
       `Peça: ${form.nomePeca || "-"}`,
+      `Material: ${result.material || "PLA"}`,
+      `Cor: ${form.cor}`,
       `Tempo de impressão: ${result.tempoHoras} horas`,
       `Peso total: ${result.pesoTotal} g`,
-      form.cor ? `Cor desejada: ${form.cor}` : null,
-      form.link ? `Link: ${form.link}` : null,
+      `Link: ${form.link}`,
       `Valor estimado: ${new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
@@ -177,17 +218,10 @@ export default function Home() {
                 </div>
                 <div className="rounded-2xl border border-stone-200 bg-white/80 p-4 shadow-sm">
                   <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">
-                    Materiais Disponíveis
+                    Garantia
                   </div>
-                  <div className="mt-2 text-sm text-stone-700 space-y-2">
-                    <div>
-                      <span className="font-bold text-stone-900">PLA: </span>
-                      Preto, Branco, Marrom, Cinza, Vermelho, Verde, Azul
-                    </div>
-                    <div>
-                      <span className="font-bold text-stone-900">PETG: </span>
-                      Preto, Branco
-                    </div>
+                  <div className="mt-2 text-sm text-stone-700">
+                    Peças inspecionadas manualmente antes do envio.
                   </div>
                 </div>
               </div>
@@ -377,30 +411,59 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      Link do arquivo de impressão
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="url"
-                      placeholder="https://makerworld.com"
-                      value={form.link}
-                      onChange={update("link")}
-                    />
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-stone-700">
+                    Link do arquivo de impressão*
+                  </label>
+                  <input
+                    className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                    type="url"
+                    placeholder="https://makerworld.com"
+                    value={form.link}
+                    onChange={update("link")}
+                  />
+                </div>
+
+                <div className="rounded-2xl border border-stone-200 bg-white/50 p-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-stone-700">
+                        Material*
+                      </label>
+                      <select
+                        className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                        value={form.material}
+                        onChange={update("material")}
+                      >
+                        {Object.keys(MATERIALS).map((key) => (
+                          <option key={key} value={key}>
+                            {key}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-stone-700">
+                        Cor da peça*
+                      </label>
+                      <select
+                        className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                        value={form.cor}
+                        onChange={update("cor")}
+                      >
+                        {MATERIALS[form.material].colors.map((color) => (
+                          <option key={color} value={color}>
+                            {color}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      Cor desejada (opcional)
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      placeholder="Ex: Preto, branco, translúcido"
-                      value={form.cor}
-                      onChange={update("cor")}
-                    />
+                  <div className="mt-3 text-sm text-stone-600">
+                    <span className="font-semibold text-stone-800">
+                      Sobre o {form.material}:
+                    </span>{" "}
+                    {MATERIALS[form.material].description}
                   </div>
                 </div>
 
@@ -434,13 +497,16 @@ export default function Home() {
                       <strong>Peça:</strong> {form.nomePeca || "-"}
                     </div>
                     <div>
+                      <strong>Material:</strong> {result.material || "PLA"}
+                    </div>
+                    <div>
+                      <strong>Cor:</strong> {form.cor}
+                    </div>
+                    <div>
                       <strong>Tempo:</strong> {result.tempoHoras} horas
                     </div>
                     <div>
                       <strong>Peso:</strong> {result.pesoTotal} g
-                    </div>
-                    <div>
-                      <strong>Cor:</strong> {form.cor || "-"}
                     </div>
                     <div className="text-base font-semibold">
                       Valor estimado:{" "}

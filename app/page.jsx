@@ -110,7 +110,7 @@ export default function Home() {
     }
 
     const custoHora = 3.0;
-    const margem = 2.0;
+    const margem = 2.2;
 
     // Preço do kg baseado no material
     const precoKg = MATERIALS[form.material].priceKg;
@@ -223,6 +223,15 @@ export default function Home() {
                   <div className="mt-2 text-sm text-stone-700">
                     Peças inspecionadas manualmente antes do envio.
                   </div>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-stone-200 bg-white/80 p-4 shadow-sm">
+                <div className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+                  Está com dúvidas?
+                </div>
+                <div className="mt-2 text-sm text-stone-700">
+                  Entre em contato conosco no número do whatsapp <span className="font-semibold">(41) 99570-2837</span> ou através do instagram <a href="https://instagram.com/blus.3d" target="_blank" rel="noreferrer" className="font-semibold text-sky-600 hover:underline">blus.3d</a>
                 </div>
               </div>
             </section>

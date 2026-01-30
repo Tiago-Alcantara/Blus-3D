@@ -110,7 +110,7 @@ export default function Home() {
     }
 
     const custoHora = 3.0;
-    const margem = 2.2;
+    const margem = 2.5;
 
     // Preço do kg baseado no material
     const precoKg = MATERIALS[form.material].priceKg;
@@ -139,6 +139,13 @@ export default function Home() {
       `Tempo de impressão: ${result.tempoHoras} horas`,
       `Peso total: ${result.pesoTotal} g`,
       `Link: ${form.link}`,
+      "",
+      "--- Dados de Entrega ---",
+      `CEP: ${form.cep}`,
+      `Endereço: ${form.logradouro}, ${form.numero}`,
+      form.complemento ? `Complemento: ${form.complemento}` : "",
+      `Bairro: ${form.bairro}`,
+      `Cidade/UF: ${form.cidade} - ${form.estado}`,
       `Valor estimado: ${new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",

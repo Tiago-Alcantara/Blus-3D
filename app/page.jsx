@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -6,21 +6,11 @@ export default function Home() {
   const MATERIALS = {
     PLA: {
       priceKg: 105.0,
-      colors: [
-        "Preto",
-        "Branco",
-        "Marrom",
-        "Cinza",
-        "Vermelho",
-        "Verde",
-        "Azul",
-      ],
       description:
         "Ideal para peças decorativas, protótipos visuais e uso geral. Acabamento brilhante e fácil impressão. Não recomendado para altas temperaturas (>60°C).",
     },
     PETG: {
       priceKg: 125.0,
-      colors: ["Preto", "Branco"],
       description:
         "Maior resistência mecânica e térmica. Ideal para peças funcionais, suportes e itens que ficarão expostos ao sol ou esforço moderado.",
     },
@@ -29,19 +19,11 @@ export default function Home() {
   const [form, setForm] = useState({
     nome: "",
     whatsapp: "",
-    cep: "",
-    numero: "",
-    logradouro: "",
-    bairro: "",
-    cidade: "",
-    estado: "",
-    complemento: "",
     nomePeca: "",
     tempo: "",
     peso: "",
     link: "",
     material: "PLA",
-    cor: MATERIALS.PLA.colors[0],
   });
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
@@ -53,12 +35,7 @@ export default function Home() {
     return (e) => {
       const value = e.target.value;
       setForm((prev) => {
-        const next = { ...prev, [field]: value };
-        // Se mudou o material, reseta a cor para a primeira disponível
-        if (field === "material") {
-          next.cor = MATERIALS[value].colors[0];
-        }
-        return next;
+        return { ...prev, [field]: value };
       });
     };
   }
@@ -97,11 +74,6 @@ export default function Home() {
       return;
     }
 
-    if (!form.link) {
-      setResult(null);
-      setError("Informe o link do arquivo de impressão.");
-      return;
-    }
 
     if (!tempoHoras || !pesoTotal) {
       setResult(null);
@@ -135,17 +107,10 @@ export default function Home() {
       `WhatsApp: ${form.whatsapp}`,
       `Peça: ${form.nomePeca || "-"}`,
       `Material: ${result.material || "PLA"}`,
-      `Cor: ${form.cor}`,
       `Tempo de impressão: ${result.tempoHoras} horas`,
       `Peso total: ${result.pesoTotal} g`,
-      `Link: ${form.link}`,
+      form.link ? `Link: ${form.link}` : "",
       "",
-      "--- Dados de Entrega ---",
-      `CEP: ${form.cep}`,
-      `Endereço: ${form.logradouro}, ${form.numero}`,
-      form.complemento ? `Complemento: ${form.complemento}` : "",
-      `Bairro: ${form.bairro}`,
-      `Cidade/UF: ${form.cidade} - ${form.estado}`,
       `Valor estimado: ${new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
@@ -265,110 +230,17 @@ export default function Home() {
                   />
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      WhatsApp*
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      placeholder="Somente numeros"
-                      value={form.whatsapp}
-                      onChange={update("whatsapp")}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      CEP*
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      placeholder="00000000"
-                      value={form.cep}
-                      onChange={update("cep")}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      Número*
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      placeholder="Ex: 123"
-                      value={form.numero}
-                      onChange={update("numero")}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      Complemento (opcional)
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      placeholder="Apto, bloco, sala"
-                      value={form.complemento}
-                      onChange={update("complemento")}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      Rua*
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      value={form.logradouro}
-                      onChange={update("logradouro")}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      Bairro*
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      value={form.bairro}
-                      onChange={update("bairro")}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      Cidade*
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      value={form.cidade}
-                      onChange={update("cidade")}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-stone-700">
-                      Estado*
-                    </label>
-                    <input
-                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                      type="text"
-                      placeholder="UF"
-                      value={form.estado}
-                      onChange={update("estado")}
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-stone-700">
+                    WhatsApp*
+                  </label>
+                  <input
+                    className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                    type="text"
+                    placeholder="Somente numeros"
+                    value={form.whatsapp}
+                    onChange={update("whatsapp")}
+                  />
                 </div>
 
                 <details className="rounded-2xl border border-stone-200 bg-white/80 p-4">
@@ -429,7 +301,7 @@ export default function Home() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-stone-700">
-                    Link do arquivo de impressão*
+                    Link do arquivo de impressão (opcional)
                   </label>
                   <input
                     className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
@@ -441,39 +313,21 @@ export default function Home() {
                 </div>
 
                 <div className="rounded-2xl border border-stone-200 bg-white/50 p-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-stone-700">
-                        Material*
-                      </label>
-                      <select
-                        className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                        value={form.material}
-                        onChange={update("material")}
-                      >
-                        {Object.keys(MATERIALS).map((key) => (
-                          <option key={key} value={key}>
-                            {key}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-stone-700">
-                        Cor da peça*
-                      </label>
-                      <select
-                        className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
-                        value={form.cor}
-                        onChange={update("cor")}
-                      >
-                        {MATERIALS[form.material].colors.map((color) => (
-                          <option key={color} value={color}>
-                            {color}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-stone-700">
+                      Material*
+                    </label>
+                    <select
+                      className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200"
+                      value={form.material}
+                      onChange={update("material")}
+                    >
+                      {Object.keys(MATERIALS).map((key) => (
+                        <option key={key} value={key}>
+                          {key}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="mt-3 text-sm text-stone-600">
                     <span className="font-semibold text-stone-800">
@@ -514,9 +368,6 @@ export default function Home() {
                     </div>
                     <div>
                       <strong>Material:</strong> {result.material || "PLA"}
-                    </div>
-                    <div>
-                      <strong>Cor:</strong> {form.cor}
                     </div>
                     <div>
                       <strong>Tempo:</strong> {result.tempoHoras} horas
